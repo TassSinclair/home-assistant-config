@@ -1,0 +1,26 @@
+printer:
+  name: 3D Printer
+  icon: mdi:printer-3d
+  entities:
+    - sensor.octoprint_current_state
+    - binary_sensor.octoprint_printing
+    - sensor.octoprint_job_percentage
+    - camera.octopi
+
+speed_test:
+  name: Internet Speed
+  entities:
+    - sensor.speedtest_download
+    - sensor.speedtest_ping
+    - sensor.speedtest_upload
+
+weather:
+  name: Weather
+  icon: mdi:weather-cloudy
+  entities:
+    - sun.sun
+    - sensor.bom_local_air_temp_c
+    - sensor.bom_local_feels_like_c
+    - sensor.bom_local_cloud
+    - sensor.bom_local_relative_humidity
+    - sensor.bom_local_weather

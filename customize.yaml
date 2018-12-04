@@ -1,0 +1,2 @@
+binary_sensor.octoprint_printing_error:
+  hidden: true
