@@ -1,5 +1,5 @@
 homeassistant:
-  name: !secret name
+  name: Haus
   latitude: !secret latitude
   longitude: !secret longitude
   elevation: 0
@@ -9,9 +9,7 @@ homeassistant:
 
 frontend:
 config:
-
 updater:
-
 discovery:
 
 # Allows you to issue voice commands from the frontend in enabled browsers
@@ -23,21 +21,8 @@ history:
 # View all events in a logbook
 logbook:
 
-#map:
-
 # Track the sun
 sun:
-
-# Sensors
-sensor:
-  - platform: yr
-
-# Text to speech
-#tts:
-#  - platform: google
-
-# Cloud
-cloud:
 
 group: !include groups.yaml
 automation: !include automations.yaml
@@ -51,6 +36,7 @@ camera:
 switch:
   - platform: tplink
     host: 192.168.1.5
+    enable_leds: false
 
 octoprint:
   host: octopi.local
@@ -58,8 +44,13 @@ octoprint:
   bed: true
   sensors:
     monitored_conditions:
-      - 'Current State'
       - 'Job Percentage'
+      - 'Time Elapsed'
+      - 'Time Remaining'
+
+  binary_sensors:
+    monitored_conditions:
+      - 'Printing'
 
 media_player:
   - platform: kodi
@@ -81,3 +72,20 @@ sensor:
       - air_temp
       - rel_hum
       - weather
+  - platform: mqtt
+    name: "Washing Temperature"
+    state_topic: "sensor/temperature"
+    qos: 0
+    unit_of_measurement: "ºC"
+  - platform: mqtt
+    name: "Washing Humidity"
+    state_topic: "sensor/humidity"
+    qos: 0
+    unit_of_measurement: "%"
+
+mqtt:
+  broker: localhost
+  client_id: haus
+  username: haus
+  password: !secret mqtt_haus_password
+
