@@ -2,7 +2,7 @@ printer:
   name: 3D Printer
   icon: mdi:printer-3d
   entities:
-    - binary_sensor.octoprint_printing
+    - sensor.octoprint_current_state
     - sensor.octoprint_job_percentage
     - sensor.octoprint_time_elapsed
     - sensor.octoprint_time_remaining
@@ -31,3 +31,9 @@ weather:
     - sensor.bom_local_cloud
     - sensor.bom_local_relative_humidity
     - sensor.bom_local_weather
+
+media_centre:
+  name: Media Centre
+  entities:
+    - media_player.kodi
+    - switch.media_centre

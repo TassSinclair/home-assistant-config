@@ -1,2 +1,14 @@
 binary_sensor.octoprint_printing_error:
   hidden: true
+sensor.bom_local_cloud:
+  icon: mdi:weather-cloudy
+sensor.bom_local_relative_humidity:
+  icon: mdi:water-percent
+sensor.bom_local_weather:
+  icon: mdi:weather-partlycloudy
+switch.media_centre:
+  icon: mdi:television
+sensor.washing_humidity:
+  icon: mdi:water-percent
+sensor.washing_temperature:
+  icon: mdi:thermometer

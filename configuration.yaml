@@ -28,6 +28,15 @@ group: !include groups.yaml
 automation: !include automations.yaml
 script: !include scripts.yaml
 
+notify:
+  - platform: kodi
+    name: kodi
+    host: kodi.local
+    port: 80
+  - platform: pushbullet
+    name: pushbullet
+    api_key: !secret pushbullet_api_key
+
 camera:
   - platform: mjpeg
     name: OctoPi
@@ -35,7 +44,7 @@ camera:
 
 switch:
   - platform: tplink
-    host: 192.168.1.5
+    host: 192.168.1.7
     enable_leds: false
 
 octoprint:
@@ -44,17 +53,18 @@ octoprint:
   bed: true
   sensors:
     monitored_conditions:
+      - 'Current State'
       - 'Job Percentage'
       - 'Time Elapsed'
       - 'Time Remaining'
-
   binary_sensors:
     monitored_conditions:
-      - 'Printing'
 
 media_player:
   - platform: kodi
+    name: kodi
     host: kodi.local
+    port: 80
 
 sensor:
   - platform: speedtest
@@ -71,7 +81,6 @@ sensor:
       - cloud
       - air_temp
       - rel_hum
-      - weather
   - platform: mqtt
     name: "Washing Temperature"
     state_topic: "sensor/temperature"
