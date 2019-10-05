@@ -6,9 +6,43 @@ sensor.bom_local_relative_humidity:
   icon: mdi:water-percent
 sensor.bom_local_weather:
   icon: mdi:weather-partlycloudy
-switch.media_centre:
-  icon: mdi:television
 sensor.washing_humidity:
   icon: mdi:water-percent
 sensor.washing_temperature:
   icon: mdi:thermometer
+script.say:
+  hidden: true
+automation.automation_0:
+  hidden: true
+script.shuffle_music:
+  icon: mdi:library-music
+script.start_netflix:
+  icon: mdi:netflix
+sensor.0x00158d00028fe92c_power:
+  friendly_name: Media Centre power
+  icon: mdi:television
+switch.0x00158d00028fe92c_switch:
+  friendly_name: Media Centre
+  icon: mdi:television
+switch.0x00158d00028feb0b_switch:
+  friendly_name: Workstation
+  icon: mdi:desktop-mac-dashboard
+sensor.0x00158d00026e9fa1_switch:
+  friendly_name: Washing Machine
+  icon: mdi:washing-machine
+sensor.0x00158d00026e9fa1_power:
+  friendly_name: Washing Machine power
+  icon: mdi:washing-machine
+light.sengled_2:
+  hidden: true
+light.sengled_1:
+  hidden: true
+switch.0x00158d00028b850a_switch:
+  friendly_name: Clothes Dryer
+  icon: mdi:tumble-dryer
+sensor.0x00158d00028feb0b_power:
+  friendly_name: Workstation power
+  icon: mdi:desktop-mac-dashboard
+sensor.0x00158d00028b850a_power:
+  friendly_name: Clothes Dryer power
+  icon: mdi:tumble-dryer
