@@ -1,48 +1,53 @@
-binary_sensor.octoprint_printing_error:
-  hidden: true
-sensor.bom_local_cloud:
-  icon: mdi:weather-cloudy
-sensor.bom_local_relative_humidity:
-  icon: mdi:water-percent
-sensor.bom_local_weather:
-  icon: mdi:weather-partlycloudy
-sensor.washing_humidity:
-  icon: mdi:water-percent
-sensor.washing_temperature:
-  icon: mdi:thermometer
-script.say:
-  hidden: true
-automation.automation_0:
-  hidden: true
-script.shuffle_music:
-  icon: mdi:library-music
-script.start_netflix:
-  icon: mdi:netflix
-sensor.0x00158d00028fe92c_power:
-  friendly_name: Media Centre power
-  icon: mdi:television
-switch.0x00158d00028fe92c_switch:
-  friendly_name: Media Centre
-  icon: mdi:television
-switch.0x00158d00028feb0b_switch:
-  friendly_name: Workstation
-  icon: mdi:desktop-mac-dashboard
-sensor.0x00158d00026e9fa1_switch:
-  friendly_name: Washing Machine
-  icon: mdi:washing-machine
 sensor.0x00158d00026e9fa1_power:
-  friendly_name: Washing Machine power
+  friendly_name: Washing machine power
   icon: mdi:washing-machine
-light.sengled_2:
-  hidden: true
-light.sengled_1:
-  hidden: true
-switch.0x00158d00028b850a_switch:
-  friendly_name: Clothes Dryer
-  icon: mdi:tumble-dryer
+switch.0x00158d00026e9fa1_switch:
+  friendly_name: Washing machine switch
+  icon: mdi:washing-machine
 sensor.0x00158d00028feb0b_power:
   friendly_name: Workstation power
   icon: mdi:desktop-mac-dashboard
+switch.0x00158d00028feb0b_switch:
+  friendly_name: Workstation switch
+  icon: mdi:desktop-mac-dashboard
 sensor.0x00158d00028b850a_power:
-  friendly_name: Clothes Dryer power
+  friendly_name: Clothes dryer power
   icon: mdi:tumble-dryer
+switch.0x00158d00028b850a_switch:
+  friendly_name: Clothes dryer switch
+  icon: mdi:tumble-dryer
+sensor.0x00158d00028fe92c_power:
+  friendly_name: Media centre power
+  icon: mdi:television
+switch.0x00158d00028fe92c_switch:
+  friendly_name: Media centre switch
+  icon: mdi:television
+sensor.0x00158d00035a7b66_click:
+  friendly_name: Media centre button
+  icon: mdi:play-pause
+sensor.bom_air_temp_c:
+  friendly_name: Air temp
+sensor.bom_cloud:
+  friendly_name: Cloudiness
+  icon: mdi:cloud-outline
+sensor.bom_feels_like_c:
+  friendly_name: Feels like
+  icon: mdi:thermometer
+sensor.bom_relative_humidity:
+  friendly_name: Relative humidity
+  icon: mdi:water-percent
+sensor.bom_rain_today:
+  friendly_name: Rain today
+  icon: mdi:weather-rainy
+sensor.bom_wind_gust_kmh:
+  friendly_name: Wind gust
+  icon: mdi:weather-windy
+sensor.bom_weather:
+  friendly_name: Summary
+  icon: mdi:weather-partly-cloudy
+sensor.speedtest_download:
+  friendly_name: Download speed
+sensor.speedtest_upload:
+  friendly_name: Upload speed
+sensor.speedtest_ping:
+  friendly_name: Ping time

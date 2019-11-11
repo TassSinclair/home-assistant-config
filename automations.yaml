@@ -1,88 +1,12 @@
-- trigger:
-    platform: mqtt
-    topic: say
-  action:
-    service: script.say
-    data_template:
-      message: "{{ trigger.payload }}"
-
-- alias: Zigbee2mqtt Log Level
-  initial_state: 'on'
+- id: '1573380114196'
+  alias: Pause Kodi
+  description: ''
   trigger:
-    - platform: state
-      entity_id: input_select.zigbee2mqtt_log_level
-      to: debug
-    - platform: state
-      entity_id: input_select.zigbee2mqtt_log_level
-      to: warn
-    - platform: state
-      entity_id: input_select.zigbee2mqtt_log_level
-      to: error
-    - platform: state
-      entity_id: input_select.zigbee2mqtt_log_level
-      to: info
-  action:
-    - service: mqtt.publish
-      data:
-        payload_template: '{{ states(''input_select.zigbee2mqtt_log_level'') }}'
-        topic: zigbee2mqtt/bridge/config/log_level
-
-- id: enable_zigbee_join
-  alias: Enable Zigbee joining
-  hide_entity: true
-  trigger:
+  - entity_id: sensor.0x00158d00035a7b66_click
     platform: state
-    entity_id: input_boolean.zigbee_permit_join
-    to: 'on'
+    to: single
+  condition: []
   action:
-    - service: mqtt.publish
-      data:
-        topic: zigbee2mqtt/bridge/config/permit_join
-        payload: 'true'
-    - service: timer.start
-      data:
-        entity_id: timer.zigbee_permit_join
-
-- id: disable_zigbee_join
-  alias: Disable Zigbee joining
-  hide_entity: true
-  trigger:
-    - entity_id: input_boolean.zigbee_permit_join
-      platform: state
-      to: 'off'
-  action:
-    - data:
-        payload: 'false'
-        topic: zigbee2mqtt/bridge/config/permit_join
-      service: mqtt.publish
-    - data:
-        entity_id: timer.zigbee_permit_join
-      service: timer.cancel
-
-- id: disable_zigbee_join_timer
-  alias: Disable Zigbee joining by timer
-  hide_entity: true
-  trigger:
-    - platform: event
-      event_type: timer.finished
-      event_data:
-        entity_id: timer.zigbee_permit_join
-  action:
-    - service: mqtt.publish
-      data:
-        topic: zigbee2mqtt/bridge/config/permit_join
-        payload: 'false'
-    - service: input_boolean.turn_off
-      data:
-        entity_id: input_boolean.zigbee_permit_join
-
-#- alias: Kodi event
-#  trigger:
-#    platform: event
-#    event_type: kodi_call_method_result
-#  action:
-#    service: media_player.play_media
-#      data_template:
-#        entity_id: media_player.kodi_2
-#        media_content_type: "file"
-#        media_content_id: 
+  - data:
+      entity_id: media_player.kodi
+    service: media_player.media_play_pause
