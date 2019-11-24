@@ -51,6 +51,24 @@ weather:
   - platform: bom
 
 sensor:
+  - platform: rest
+    resource: !secret rest_st_george_balance_available
+    name: St. George balance
+    value_template: '{{ value_json["balanceAvailable"] }}'
+    unit_of_measurement: '$'
+
+  - platform: rest
+    resouce: !secret rest_ing_balance_available
+    name: ING balance
+    value_template: '{{ value_json["balanceAvailable"] }}'
+    unit_of_measurement: '$'
+
+  - platform: rest
+    resource: !secret rest_st_george_home_loan
+    name: Home loan
+    value_template: '{{ value_json["balanceTotal"] }}'
+    unit_of_measurement: '$'
+
   - platform: bom
     station: !secret bom_station
     monitored_conditions:
@@ -60,9 +78,7 @@ sensor:
       - air_temp
       - rain_trace
       - rel_hum
-      - vis_km
       - weather
-      - wind_spd_kmh
 
 group: !include groups.yaml
 automation: !include automations.yaml

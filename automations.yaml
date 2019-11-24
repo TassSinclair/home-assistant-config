@@ -10,3 +10,16 @@
   - data:
       entity_id: media_player.kodi
     service: media_player.media_play_pause
+- id: '1573883685626'
+  alias: Notify when printer finishes
+  description: ''
+  trigger:
+  - entity_id: sensor.octoprint_current_state
+    from: Printing
+    platform: state
+    to: Operational
+  condition: []
+  action:
+  - data:
+      message: Printer has finished
+    service: notify.notify_pushbullet

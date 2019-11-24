@@ -51,3 +51,9 @@ sensor.speedtest_upload:
   friendly_name: Upload speed
 sensor.speedtest_ping:
   friendly_name: Ping time
+sensor.home_loan:
+  icon: mdi:cash-usd-outline
+sensor.ing_balance:
+  icon: mdi:cash-usd-outline
+sensor.st_george_balance:
+  icon: mdi:cash-usd-outline
