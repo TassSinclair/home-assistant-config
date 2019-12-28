@@ -1,12 +1,23 @@
-default_config:
+mobile_app:
+updater:
+system_health:
+config:
+logbook:
+sun:
+
 
 http:
   base_url: !secret http_base_url
   use_x_forwarded_for: true
   trusted_proxies: 127.0.0.1
 
+snips:
+
+intent_script: !include intent_scripts.yaml
+
 tts:
-  - platform: google_translate
+  - platform: picotts
+    language: 'en-GB'
 
 speedtestdotnet:
   scan_interval:
@@ -47,6 +58,11 @@ camera:
   - platform: bom
     location: Melbourne
 
+  - platform: mjpeg
+    name: 3D Printer
+    still_image_url: http://octopi.local/webcam/?action=snapshot
+    mjpeg_url: http://octopi.local/webcam/?action=stream
+
 weather:
   - platform: bom
 
@@ -58,7 +74,7 @@ sensor:
     unit_of_measurement: '$'
 
   - platform: rest
-    resouce: !secret rest_ing_balance_available
+    resource: !secret rest_ing_balance_available
     name: ING balance
     value_template: '{{ value_json["balanceAvailable"] }}'
     unit_of_measurement: '$'
@@ -79,6 +95,36 @@ sensor:
       - rain_trace
       - rel_hum
       - weather
+
+  - platform: template
+    sensors:
+      washing_machine:
+        friendly_name: "Washing machine"
+        value_template: "{{ state_attr('sensor.0x00158d00026e9fa1_power', 'power') | float > 4 }}"
+
+binary_sensor:
+  - platform: template
+    sensors:
+      mailbox:
+        friendly_name: "Mailbox"
+        entity_id:
+          - "binary_sensor.0x00158d000357fe12_contact"
+          - "binary_sensor.0x00158d000357feef_contact"
+        device_class: motion
+        value_template: >-
+          {% if is_state('binary_sensor.mailbox', 'off') %}
+            {{ is_state('binary_sensor.0x00158d000357fe12_contact', 'on') }}
+          {% else %}
+            {{ not is_state('binary_sensor.0x00158d000357feef_contact', 'on') }}
+          {% endif %}
+        icon_template: >-
+          {% if is_state('binary_sensor.0x00158d000357fe12_contact', 'on') %}
+            mdi:mailbox-up-outline
+          {% elif is_state('binary_sensor.0x00158d000357feef_contact', 'on') %}
+            mdi:mailbox-outline
+          {% else %}
+            {{ state_attr('binary_sensor.mailbox.icon') }}
+          {% endif %}
 
 group: !include groups.yaml
 automation: !include automations.yaml

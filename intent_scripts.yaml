@@ -1,0 +1,18 @@
+TurnOn:
+  action:
+    - service: snips.say
+      data_template:
+        text: 'Turning on {{ device }}'
+    - service: switch.turn_on
+      data:
+        entity_id: switch.0x00158d00028fe92c_switch
+
+TurnOff:
+  action:
+    - service: snips.say
+      data_template:
+        text: 'Turning off {{ device }}'
+    - service: switch.turn_off
+      data:
+        entity_id: switch.0x00158d00028fe92c_switch
+
