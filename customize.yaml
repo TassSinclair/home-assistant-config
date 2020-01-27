@@ -57,3 +57,5 @@ sensor.ing_balance:
   icon: mdi:cash-usd-outline
 sensor.st_george_balance:
   icon: mdi:cash-usd-outline
+script.clear_mailbox:
+  icon: mdi:mailbox-outline

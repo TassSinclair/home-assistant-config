@@ -1,1 +1,9 @@
-{}
+clear_mailbox:
+  alias: Clear mailbox
+  sequence:
+  - wait_template: "{{ is_state('script.clear_mailbox', 'on') }}"
+  - service: homeassistant.update_entity
+    data:
+      entity_id: binary_sensor.mailbox
+  - wait_template: "{{ is_state('binary_sensor.mailbox', 'off') }}"
+    timeout: '00:00:02'
