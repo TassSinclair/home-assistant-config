@@ -173,10 +173,10 @@
     to: single
   condition: []
   action:
-  - device_id: c401a39f2848404b903f1c8776508752
-    domain: light
-    entity_id: light.0xb0ce1814033b6827_light
-    type: toggle
+  - alias: ''
+    data:
+      entity_id: light.0xb0ce1814033b6827_light
+    service: light.toggle
 - id: '1579963933873'
   alias: Set north bathroom lamp brightness
   description: ''
@@ -193,3 +193,102 @@
       transition: '1'
       brightness: '{{ 255 if state_attr("light.0xb0ce1814033b6827_light", "brightness")
         == 5 else 5 }}'
+- id: '1580816889598'
+  alias: Mailbox sensor
+  description: ''
+  trigger:
+  - entity_id: binary_sensor.mailbox
+    platform: state
+    to: 'on'
+  condition: []
+  action:
+  - data:
+      message: Mail delivery!
+    service: notify.notify_pushbullet
+- id: kodi_remote_left
+  alias: Kodi remote left
+  description: ''
+  trigger:
+  - entity_id: sensor.ikea_tradfri_remote_74e77e_action
+    platform: state
+    to: arrow_left_click
+  condition: []
+  action:
+  - data:
+      method: Input.Left
+    entity_id: media_player.kodi
+    service: kodi.call_method
+- id: kodi_remote_right
+  alias: Kodi remote right
+  description: ''
+  trigger:
+  - entity_id: sensor.ikea_tradfri_remote_74e77e_action
+    platform: state
+    to: arrow_right_click
+  condition: []
+  action:
+  - data:
+      method: Input.Right
+    entity_id: media_player.kodi
+    service: kodi.call_method
+- id: kodi_remote_down
+  alias: Kodi remote down
+  description: ''
+  trigger:
+  - entity_id: sensor.ikea_tradfri_remote_74e77e_action
+    platform: state
+    to: brightness_down_click
+  condition: []
+  action:
+  - data:
+      method: Input.Down
+    entity_id: media_player.kodi
+    service: kodi.call_method
+- id: kodi_remote_up
+  alias: Kodi remote up
+  description: ''
+  trigger:
+  - entity_id: sensor.ikea_tradfri_remote_74e77e_action
+    platform: state
+    to: brightness_up_click
+  condition: []
+  action:
+  - data:
+      method: Input.Up
+    entity_id: media_player.kodi
+    service: kodi.call_method
+- id: kodi_remote_select
+  alias: Kodi remote select
+  description: ''
+  trigger:
+  - entity_id: sensor.ikea_tradfri_remote_74e77e_action
+    platform: state
+    to: toggle
+  condition: []
+  action:
+  - data:
+      method: Input.Select
+    entity_id: media_player.kodi
+    service: kodi.call_method
+- id: doorbell_pressed
+  alias: Doorbell pressed
+  trigger:
+  - entity_id: sensor.0x00158d0002c41211_click
+    platform: state
+    to: single
+  action:
+  - service: script.notify_doorbell_pressed
+- id: '1585750139777'
+  alias: Turn off 3D printer when finished printing
+  description: ''
+  trigger:
+  - entity_id: sensor.octoprint_current_state
+    from: Printing
+    platform: state
+    to: Operational
+  condition: []
+  action:
+  - device_id: c98dfce14cb3463fa0d6c748021fdceb
+    domain: switch
+    entity_id: switch.0x00158d00028b850a_switch
+    type: turn_off

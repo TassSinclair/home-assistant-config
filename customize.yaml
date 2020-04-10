@@ -11,11 +11,11 @@ switch.0x00158d00028feb0b_switch:
   friendly_name: Workstation switch
   icon: mdi:desktop-mac-dashboard
 sensor.0x00158d00028b850a_power:
-  friendly_name: Clothes dryer power
-  icon: mdi:tumble-dryer
+  friendly_name: 3D printer power
+  icon: mdi:printer-3d
 switch.0x00158d00028b850a_switch:
-  friendly_name: Clothes dryer switch
-  icon: mdi:tumble-dryer
+  friendly_name: 3D printer switch
+  icon: mdi:printer-3d
 sensor.0x00158d00028fe92c_power:
   friendly_name: Media centre power
   icon: mdi:television
@@ -59,3 +59,29 @@ sensor.st_george_balance:
   icon: mdi:cash-usd-outline
 script.clear_mailbox:
   icon: mdi:mailbox-outline
+sensor.everyday_myki:
+  icon: mdi:card-bulleted-outline
+sensor.australia_coronavirus_deaths:
+  icon: mdi:skull-outline
+sensor.worldwide_coronavirus_deaths:
+  icon: mdi:skull-outline
+sensor.worldwide_coronavirus_recovered:
+  icon: mdi:human-handsup
+sensor.australia_coronavirus_recovered:
+  icon: mdi:human-handsup
+sensor.australia_coronavirus_current:
+  icon: mdi:biohazard
+sensor.worldwide_coronavirus_current:
+  icon: mdi:biohazard
+sensor.worldwide_coronavirus_confirmed:
+  icon: mdi:hospital-box-outline
+sensor.australia_coronavirus_confirmed:
+  icon: mdi:hospital-box-outline
+sensor.taiwan_coronavirus_confirmed:
+  icon: mdi:hospital-box-outline
+sensor.taiwan_coronavirus_current:
+  icon: mdi:biohazard
+sensor.taiwan_coronavirus_deaths:
+  icon: mdi:skull-outline
+sensor.taiwan_coronavirus_recovered:
+  icon: mdi:human-handsup

@@ -40,6 +40,9 @@ notify:
     name: notify_pushbullet
     api_key: !secret pushbullet_api_key
 
+shell_command:
+  play_sound: 'aplay -D sysdefault {{ sound_file }}'
+
 octoprint:
   host: octopi.local
   api_key: !secret octoprint_api_key
@@ -57,6 +60,9 @@ media_player:
     port: 80
     enable_websocket: true
     tcp_port: 9090
+  - platform: vlc
+    name: speaker
+    arguments: "--aout=alsa --alsa-audio-device=sysdefault:CARD=ALSA"
 
 camera:
   - platform: bom
@@ -72,6 +78,17 @@ weather:
     station: !secret bom_station
 
 sensor:
+  - platform: mqtt
+    state_topic: "smart-kettle/temperature"
+    icon: "mdi:kettle"
+    name: Smart Kettle
+    unit_of_measurement: "°C"
+
+  - platform: time_date
+    display_options:
+      - 'time'
+      - 'date'
+
   - platform: rest
     resource: !secret rest_st_george_balance_available
     name: St. George balance
