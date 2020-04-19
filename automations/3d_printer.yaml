@@ -1,0 +1,10 @@
+
+- id: 3d_printer_finished_printing
+  alias: 3d printer finished printing
+  trigger:
+  - entity_id: sensor.octoprint_current_state
+    from: Printing
+    platform: state
+    to: Operational
+  action:
+  - service: script.turn_off_3d_printer

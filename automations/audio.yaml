@@ -1,0 +1,93 @@
+- id: audio_source_url_updated
+  alias: Audio source URL updated
+  trigger:
+  - entity_id: input_text.audio_source_url
+    platform: state
+  action:
+  - service: script.play_audio_on_haus_audio
+    data_template:
+      audio_source_url: "{{ states('input_text.audio_source_url') }}"
+      audio_type: music
+    
+- id: podcast_choice_updated
+  alias: Podcast choice updated
+  trigger:
+  - entity_id: input_select.podcast_feed_url
+    platform: state
+  action:
+  - service: script.play_audio_on_haus_audio
+    data_template:
+      audio_source_url: "{% set mapper = {\n    'Security Now': states('sensor.podcast_security_now'),\n\
+        \    'Developer Tea': states('sensor.podcast_developer_tea'),\n    'TED Talks\
+        \ Daily': states('sensor.podcast_ted_talks_daily'),\n    'The Unmade Podcast':\
+        \ states('sensor.podcast_the_unmade_podcast'),\n    'Very Bad Wizards': states('sensor.podcast_very_bad_wizards'),\n\
+        \    'ThoughtWorks Podcast': states('sensor.podcast_thoughtworks_podcast'),\n\
+        \    'The Infinite Monkey Page': states('sensor.podcast_the_infinite_monkey_page'),\n\
+        \    'Reply All': states('sensor.podcast_reply_all'),\n    'Planet Money':\
+        \ states('sensor.podcast_planet_money'),\n    'Making Sense': states('sensor.podcast_making_sense'),\n\
+        \    '99 Percent Invisible': states('sensor.podcast_99_percent_invisible'),\n\
+        \  } %}\n{% set selection = states('input_select.podcast_feed_url') %} {{\
+        \ mapper[selection] if selection in mapper else 'error' }}\n"
+      audio_type: music
+
+- id: radio_choice_updated
+  alias: Radio choice updated
+  trigger:
+  - entity_id: input_select.radio_feed_url
+    platform: state
+  action:
+  - service: script.play_audio_on_haus_audio
+    data_template:
+      audio_source_url: "{% set mapper = {\n    'ABC News': 'http://live-radio01.mediahubaustralia.com/PBW/mp3/',\n\
+        \    'ABC Melbourne': 'http://live-radio01.mediahubaustralia.com/3LRW/mp3/',\n\
+        \    'ABC Radio National': 'http://live-radio01.mediahubaustralia.com/2RNW/mp3/',\n\
+        \  } %}\n{% set selection = states('input_select.radio_feed_url') %} {{ mapper[selection]\
+        \ if selection in mapper else 'error' }}\n"
+      audio_type: music
+
+- id: podcast_remote_left_pressed
+  alias: Podcast remote left pressed
+  trigger:
+  - entity_id: sensor.tradfri_remote_control_74e77e_action
+    platform: state
+    to: arrow_left_click
+  action:
+  - service: script.seek_backward_haus_audio
+
+- id: podcast_remote_right_pressed
+  alias: Podcast remote right pressed
+  trigger:
+  - entity_id: sensor.tradfri_remote_control_74e77e_action
+    platform: state
+    to: arrow_right_click
+  action:
+  - service: script.seek_forward_haus_audio
+    
+- id: podcast_remote_down_pressed
+  alias: Podcast remote down pressed
+  trigger:
+  - entity_id: sensor.tradfri_remote_control_74e77e_action
+    platform: state
+    to: brightness_down_click
+  action:
+  - service: script.decrease_volume_on_haus_audio
+    
+- id: podcast_remote_up_pressed
+  alias: Podcast remote up pressed
+  trigger:
+  - entity_id: sensor.tradfri_remote_control_74e77e_action
+    platform: state
+    to: brightness_up_click
+  action:
+  - service: script.increase_volume_on_haus_audio
+    
+- id: podcast_remote_select_pressed
+  alias: Podcast remote select pressed
+  description: ''
+  trigger:
+  - entity_id: sensor.tradfri_remote_control_74e77e_action
+    platform: state
+    to: toggle
+  condition: []
+  action:
+  - service: script.play_or_pause_haus_audio

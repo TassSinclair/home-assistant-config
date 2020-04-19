@@ -1,0 +1,22 @@
+- id: st_george_balance_changed
+  alias: St. George balance changed
+  trigger:
+  - entity_id: sensor.st_george_balance
+    platform: state
+  condition: []
+  action:
+  - data:
+      message: "St. George balance is ${{ states('sensor.st_george_balance') }}"
+    service: notify.notify_pushbullet
+
+- id: ing_balance_changed
+  alias: ING balance changed
+  description: ''
+  trigger:
+  - entity_id: sensor.ing_balance
+    platform: state
+  condition: []
+  action:
+  - data:
+      message: "ING balance is ${{ states('sensor.ing_balance') }}"
+    service: notify.notify_pushbullet

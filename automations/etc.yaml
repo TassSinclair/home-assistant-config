@@ -1,0 +1,97 @@
+
+- id: '1575103717785'
+  alias: Notify when washing machine finishes
+  description: ''
+  trigger:
+  - below: 5
+    device_id: 8ade2b7fee914993b9c0c0603da67237
+    domain: sensor
+    entity_id: sensor.mijia_power_plug_6e9fa1_power
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 10
+    platform: device
+    type: value
+  condition: []
+  action:
+  - data:
+      message: Washing machine has finished
+    service: notify.notify_pushbullet
+
+- id: '1578741489934'
+  alias: Lamp turned on
+  description: ''
+  trigger:
+  - device_id: 39a1d0389ed145c3a24fafac4c19f00c
+    domain: light
+    entity_id: light.sengled_light_3b6616_light
+    platform: device
+    type: turned_on
+  condition: []
+  action:
+  - alias: ''
+    data:
+      payload: 1
+      topic: /remote_switch/in
+    service: mqtt.publish
+
+- id: '1578741569578'
+  alias: Lamp turned off
+  description: ''
+  trigger:
+  - device_id: 39a1d0389ed145c3a24fafac4c19f00c
+    domain: light
+    entity_id: light.sengled_light_3b6616_light
+    platform: device
+    type: turned_off
+  condition: []
+  action:
+  - data:
+      payload: 0
+      topic: /remote_switch/in
+    service: mqtt.publish
+- id: '1578741643740'
+  alias: Toggle light on/off
+  description: ''
+  trigger:
+  - platform: mqtt
+    topic: /remote_switch/out
+  condition: []
+  action:
+  - device_id: 39a1d0389ed145c3a24fafac4c19f00c
+    domain: light
+    entity_id: light.sengled_light_3b6616_light
+    type: toggle
+
+- id: '1579963381415'
+  alias: Toggle north bedroom lamp
+  description: ''
+  trigger:
+  - entity_id: sensor.mijia_wireless_button_3e8df9_click
+    platform: state
+    to: single
+  condition: []
+  action:
+  - alias: ''
+    data:
+      entity_id: light.sengled_light_3b6827_light
+    service: light.toggle
+- id: '1579963933873'
+  alias: Set north bathroom lamp brightness
+  description: ''
+  trigger:
+  - entity_id: sensor.mijia_wireless_button_3e8df9_click
+    platform: state
+    to: double
+  condition: []
+  action:
+  - alias: ''
+    service: light.turn_on
+    data_template:
+      entity_id: light.sengled_light_3b6827_light
+      transition: '1'
+      brightness: "{{ 255 if state_attr('light.sengled_light_3b6827_light', 'brightness')
+        == 5 else 5 }}"
+
+

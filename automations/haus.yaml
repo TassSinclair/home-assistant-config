@@ -1,0 +1,19 @@
+- id: haus_is_online
+  alias: Haus is online
+  trigger:
+  - event: start
+    platform: homeassistant
+  action:
+  - service: script.make_announcement
+    data:
+      message: House is now online.
+
+- id: status_button_pressed
+  alias: Status button pressed
+  trigger:
+  - entity_id: sensor.mijia_wireless_button_5a6c0d_click
+    platform: state
+    to: single
+  action:
+  - service: script.announce_status_update
+

@@ -1,0 +1,42 @@
+- id: lounge_night_light_on
+  alias: Lounge night light on
+  trigger:
+  - device_id: cc3f89b81eaf4deaa9499f67a20a8ff9
+    domain: binary_sensor
+    entity_id: binary_sensor.mijia_movement_sensor_f13014_occupancy
+    platform: device
+    type: motion
+  condition:
+  - after: '23:00'
+    before: 07:00
+    condition: time
+  - condition: state
+    entity_id: light.sengled_light_3b6616_light
+    state: 'off'
+  - condition: template
+    value_template: "{{ states('media_player.kodi') != 'playing' }}"
+  action:
+  - data:
+      brightness: 80
+      entity_id: light.sengled_light_3b6616_light
+      transition: 5
+    service: light.turn_on
+
+- id: lounge_night_light_off
+  alias: Lounge night light off
+  trigger:
+  - device_id: cc3f89b81eaf4deaa9499f67a20a8ff9
+    domain: binary_sensor
+    entity_id: binary_sensor.mijia_movement_sensor_f13014_occupancy
+    platform: device
+    type: no_motion
+  condition:
+  - after: '23:00'
+    before: 07:00
+    condition: time
+  - condition: template
+    value_template: "{{ states('media_player.kodi') != 'playing' }}"
+  action:
+  - data:
+      entity_id: light.sengled_light_3b6616_light
+    service: light.turn_off

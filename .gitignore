@@ -6,3 +6,4 @@ secrets.yaml
 tts
 .uuid
 *.save
+.shopping_list.json

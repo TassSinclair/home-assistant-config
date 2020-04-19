@@ -1,0 +1,23 @@
+- id: mailbox_sensor_has_mail
+  alias: Mailbox sensor has mail
+  description: ''
+  trigger:
+  - entity_id: binary_sensor.mailbox
+    platform: state
+    to: 'on'
+  condition: []
+  action:
+  - data:
+      message: Mail delivery!
+    service: notify.notify_pushbullet
+
+
+- id: doorbell_pressed
+  alias: Doorbell pressed
+  trigger:
+  - entity_id: sensor.mijia_wireless_button_c41211_click
+    platform: state
+    to: single
+  action:
+  - service: script.notify_doorbell_pressed
+

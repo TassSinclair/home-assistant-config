@@ -12,16 +12,12 @@ logbook:
 
 sun:
 
+shopping_list:
+
 http:
   base_url: !secret http_base_url
   use_x_forwarded_for: true
   trusted_proxies: 127.0.0.1
-
-intent_script: !include intent_scripts.yaml
-
-tts:
-  - platform: picotts
-    language: 'en-GB'
 
 speedtestdotnet:
   scan_interval:
@@ -42,6 +38,39 @@ notify:
 
 shell_command:
   play_sound: 'aplay -D sysdefault {{ sound_file }}'
+  seek_haus_audio: '/home/homeassistant/bin/mpdseek {{ seek_seconds }}'
+  create_speech: 'flite -o {{ sound_file }} -voice /home/pi/cmu_us_slt.flitevox -t "{{ message }}"'
+
+input_text:
+  audio_source_url:
+    name: Audio source URL
+    icon: 'mdi:file-music-outline'
+    max: 255
+    initial: ''
+
+input_select:
+  podcast_feed_url:
+    name: Podcast feed URL
+    icon: 'mdi:podcast'
+    options:
+      - '99 Percent Invisible'
+      - 'Developer Tea'
+      - 'The Infinite Monkey Page'
+      - 'Making Sense'
+      - 'Planet Money'
+      - 'Reply All'
+      - 'Security Now'
+      - 'TED Talks Daily'
+      - 'ThoughtWorks Podcast'
+      - 'The Unmade Podcast'
+      - 'Very Bad Wizards'
+  radio_feed_url:
+    name: Radio feed URL
+    icon: 'mdi:radio'
+    options:
+      - 'ABC Melbourne'
+      - 'ABC News'
+      - 'ABC Radio National'
 
 octoprint:
   host: octopi.local
@@ -60,9 +89,9 @@ media_player:
     port: 80
     enable_websocket: true
     tcp_port: 9090
-  - platform: vlc
-    name: speaker
-    arguments: "--aout=alsa --alsa-audio-device=sysdefault:CARD=ALSA"
+  - platform: mpd
+    host: 127.0.0.1
+    name: Haus
 
 camera:
   - platform: bom
@@ -110,8 +139,67 @@ sensor:
   - platform: rest
     resource: !secret rest_myki_everyday
     name: Everyday myki
-    value_template: '{{ value_json["balance"] }}'
+    value_template: '{{ value_json["money"] }}'
     unit_of_measurement: '$'
+
+  - platform: rest
+    resource: !secret rest_ptv_ripponlea_next
+    name: Next trains from Ripponlea to city
+    value_template: ''
+    json_attributes:
+      - departures
+
+  - platform: rest
+    resource: !secret rest_ptv_ripponlea_disruptions
+    name: Disruptions affecting Ripponlea
+    value_template: ''
+    json_attributes:
+      - disruptions
+
+  - platform: command_line
+    name: washing_time
+    command: "python3 /home/homeassistant/.homeassistant/python_scripts/washing-time.py {{ (as_timestamp(states.sun.sun.attributes.next_setting) - as_timestamp(now())) / 60 if is_state('sun.sun', 'above_horizon') else 0 }} {{ states('sensor.bom_air_temp_c') }} {{ states('sensor.bom_relative_humidity') }}"
+
+  - platform: template
+    sensors:
+      next_train_from_ripponlea_to_city_1_estimated:
+        value_template: >-
+          {% set departure = states.sensor.next_trains_from_ripponlea_to_city.attributes.departures[0] %}
+          {% set estimated_time = departure.estimated_departure_utc or departure.scheduled_departure_utc %}
+          {% set seconds = (as_timestamp(estimated_time) - as_timestamp(now())) | int %}
+          {{ "{:02d}:{:02d}:{:02d}".format(seconds // 3600, (seconds % 3600) // 60, seconds % 60) if seconds > 0
+             else "-{:02d}:{:02d}:{:02d}".format(-seconds // 3600, (-seconds % 3600) // 60, -seconds % 60) }}
+        icon_template: "mdi:train"
+        friendly_name_template: "{{ as_timestamp(states.sensor.next_trains_from_ripponlea_to_city.attributes.departures[0].scheduled_departure_utc) | timestamp_custom('%H:%M') + ' to city'}}"
+        entity_id:
+          - sensor.next_trains_from_ripponlea_to_city
+          - sensor.time
+
+      next_train_from_ripponlea_to_city_2_estimated:
+        value_template: >-
+          {% set departure = states.sensor.next_trains_from_ripponlea_to_city.attributes.departures[1] %}
+          {% set estimated_time = departure.estimated_departure_utc or departure.scheduled_departure_utc %}
+          {% set seconds = (as_timestamp(estimated_time) - as_timestamp(now())) | int %}
+          {{ "{:02d}:{:02d}:{:02d}".format(seconds // 3600, (seconds % 3600) // 60, seconds % 60) if seconds > 0
+             else "-{:02d}:{:02d}:{:02d}".format(-seconds // 3600, (-seconds % 3600) // 60, -seconds % 60) }}
+        icon_template: "mdi:train"
+        friendly_name_template: "{{ as_timestamp(states.sensor.next_trains_from_ripponlea_to_city.attributes.departures[1].scheduled_departure_utc) | timestamp_custom('%H:%M') + ' to city'}}"
+        entity_id:
+          - sensor.next_trains_from_ripponlea_to_city
+          - sensor.time
+
+      next_train_from_ripponlea_to_city_3_estimated:
+        value_template: >-
+          {% set departure = states.sensor.next_trains_from_ripponlea_to_city.attributes.departures[2] %}
+          {% set estimated_time = departure.estimated_departure_utc or departure.scheduled_departure_utc %}
+          {% set seconds = (as_timestamp(estimated_time) - as_timestamp(now())) | int %}
+          {{ "{:02d}:{:02d}:{:02d}".format(seconds // 3600, (seconds % 3600) // 60, seconds % 60) if seconds > 0
+             else "-{:02d}:{:02d}:{:02d}".format(-seconds // 3600, (-seconds % 3600) // 60, -seconds % 60) }}
+        icon_template: "mdi:train"
+        friendly_name_template: "{{ as_timestamp(states.sensor.next_trains_from_ripponlea_to_city.attributes.departures[2].scheduled_departure_utc) | timestamp_custom('%H:%M') + ' to city'}}"
+        entity_id:
+          - sensor.next_trains_from_ripponlea_to_city
+          - sensor.time
 
   - platform: bom
     station: !secret bom_station
@@ -128,7 +216,74 @@ sensor:
     sensors:
       washing_machine:
         friendly_name: "Washing machine"
-        value_template: "{{ state_attr('sensor.0x00158d00026e9fa1_power', 'power') | float > 4 }}"
+        value_template: "{{ state('sensor.mijia_power_plug_6e9fa1_power') | float > 4 }}"
+
+  - platform: scrape
+    name: Podcast Security Now
+    resource: http://feeds.twit.tv/sn.xml
+    select: 'enclosure:nth-of-type(1)'
+    attribute: url
+    scan_interval: 3600
+  - platform: scrape
+    name: Podcast Developer Tea
+    resource: https://rss.simplecast.com/podcasts/363/rss
+    select: 'enclosure:nth-of-type(1)'
+    attribute: url
+    scan_interval: 3600
+  - platform: scrape
+    name: Podcast 99 Percent Invisible
+    resource: http://feeds.99percentinvisible.org/99percentinvisible
+    select: 'enclosure:nth-of-type(1)'
+    attribute: url
+    scan_interval: 3600
+  - platform: scrape
+    name: Podcast Making Sense
+    resource: http://wakingup.libsyn.com/rss
+    select: 'enclosure:nth-of-type(1)'
+    attribute: url
+    scan_interval: 3600
+  - platform: scrape
+    name: Podcast Planet Money
+    resource: https://www.npr.org/rss/podcast.php?id=510289
+    select: 'enclosure:nth-of-type(1)'
+    attribute: url
+    scan_interval: 3600
+  - platform: scrape
+    name: Podcast Reply All
+    resource: http://feeds.gimletmedia.com/hearreplyall
+    select: 'enclosure:nth-of-type(1)'
+    attribute: url
+    scan_interval: 3600
+  - platform: scrape
+    name: Podcast The Infinite Monkey Page
+    resource: https://podcasts.files.bbci.co.uk/b00snr0w.rss
+    select: 'enclosure:nth-of-type(1)'
+    attribute: url
+    scan_interval: 3600
+  - platform: scrape
+    name: Podcast ThoughtWorks Podcast
+    resource: https://thoughtworks.libsyn.com/rss
+    select: 'enclosure:nth-of-type(1)'
+    attribute: url
+    scan_interval: 3600
+  - platform: scrape
+    name: Podcast Very Bad Wizards
+    resource: https://verybadwizards.fireside.fm/rss
+    select: 'enclosure:nth-of-type(1)'
+    attribute: url
+    scan_interval: 3600
+  - platform: scrape
+    name: Podcast The Unmade Podcast
+    resource: https://www.unmade.fm/episodes?format=rss
+    select: 'enclosure:nth-of-type(1)'
+    attribute: url
+    scan_interval: 3600
+  - platform: scrape
+    name: Podcast TED Talks Daily
+    resource: http://feeds.feedburner.com/TEDTalks_audio
+    select: 'enclosure:nth-of-type(1)'
+    attribute: url
+    scan_interval: 3600
 
 binary_sensor:
   - platform: template
@@ -136,25 +291,25 @@ binary_sensor:
       mailbox:
         friendly_name: "Mailbox"
         entity_id:
-          - binary_sensor.0x00158d000357fe12_contact
-          - binary_sensor.0x00158d000357feef_contact
+          - binary_sensor.mijia_contact_sensor_57fe12_contact
+          - binary_sensor.mijia_contact_sensor_57feef_contact
         device_class: motion
         value_template: >-
           {% if is_state('binary_sensor.mailbox', 'off') %}
-            {{ is_state('binary_sensor.0x00158d000357fe12_contact', 'on') }}
+            {{ is_state('binary_sensor.mijia_contact_sensor_57fe12_contact', 'on') }}
           {% else %}
-            {{ is_state('binary_sensor.0x00158d000357feef_contact', 'off') and is_state('script.clear_mailbox', 'off') }}
+            {{ is_state('binary_sensor.mijia_contact_sensor_57feef_contact', 'off') and is_state('script.clear_mailbox', 'off') }}
           {% endif %}
         icon_template: >-
           {% if is_state('binary_sensor.mailbox', 'off') %}
-            {{ 'mdi:mailbox-up-outline' if is_state('binary_sensor.0x00158d000357fe12_contact', 'on') else 'mdi:mailbox-outline' }}
+            {{ 'mdi:mailbox-up-outline' if is_state('binary_sensor.mijia_contact_sensor_57fe12_contact', 'on') else 'mdi:mailbox-outline' }}
           {% else %}
-            {{ 'mdi:mailbox-up-outline' if is_state('binary_sensor.0x00158d000357feef_contact', 'off') and is_state('script.clear_mailbox', 'off') else 'mdi:mailbox-outline'}}
+            {{ 'mdi:mailbox-up-outline' if is_state('binary_sensor.mijia_contact_sensor_57feef_contact', 'off') and is_state('script.clear_mailbox', 'off') else 'mdi:mailbox-outline'}}
           {% endif %}
 
 group: !include groups.yaml
-automation: !include automations.yaml
-script: !include scripts.yaml
+automation: !include_dir_merge_list automations/
+script: !include_dir_merge_named scripts/
 
 homeassistant:
   customize: !include customize.yaml

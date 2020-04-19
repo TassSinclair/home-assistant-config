@@ -1,0 +1,9 @@
+turn_off_3d_printer:
+  alias: Turn off 3D printer
+  sequence:
+  - data:
+      message: Printer has finished
+    service: notify.notify_pushbullet
+  - service: switch.turn_off
+    data:
+      entity_id: switch.sensor.mijia_power_plug_8feb0b_switch

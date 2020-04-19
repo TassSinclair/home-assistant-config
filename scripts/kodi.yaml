@@ -1,0 +1,27 @@
+- id: '1576921942730'
+  alias: Kodi play/pause
+  description: ''
+  trigger:
+  - platform: mqtt
+    topic: zigbee2mqtt/ikea_symfonisk_remote_74d44a
+  condition:
+  - condition: template
+    value_template: "{{ 'play_pause' in trigger.payload }}"
+  action:
+  - data:
+      entity_id: media_player.kodi
+    service: media_player.media_play_pause
+
+- id: d09e759079d6459fa6dd5fae89008ea8
+  alias: Kodi set volume
+  trigger:
+  - platform: mqtt
+    topic: zigbee2mqtt/ikea_symfonisk_remote_74d44a
+  condition:
+  - condition: template
+    value_template: "{{ trigger.payload_json.action == 'rotate_stop' }}"
+  action:
+  - data_template:
+      entity_id: media_player.kodi
+      volume_level: "{{ (trigger.payload_json.brightness / 255) | round(2) }}"
+    service: media_player.volume_set

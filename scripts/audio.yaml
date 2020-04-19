@@ -1,0 +1,83 @@
+
+make_announcement:
+  alias: make_announcement
+  sequence:
+  - service: shell_command.create_speech
+    data_template:
+      message: '{{ message }}'
+      sound_file: /tmp/announcement.wav
+  - service: shell_command.play_sound
+    data:
+      sound_file: /home/pi/cityrail-chime.wav
+  - service: shell_command.play_sound
+    data_template:
+      sound_file: /tmp/announcement.wav
+
+play_acknowledgement_sound:
+  alias: Play acknowledgement sound
+  sequence:
+  - service: shell_command.play_sound
+    data:
+      sound_file: /home/pi/button.wav
+
+announce_status_update:
+  alias: Announce status update
+  sequence:
+  - service: script.make_announcement
+    data_template:
+      message: "The time is {{ now().strftime('%H:%M') }}. It is {{ states('sensor.bom_cloud') }} with {{ states('sensor.bom_weather') }} outside. It is a {{ states('sensor.washing_time') }} time to put washing out."
+
+play_audio_on_haus_audio:
+  alias: Play audio on Haus audio
+  sequence:
+  - service: script.play_acknowledgement_sound
+  - service: media_player.play_media
+    data_template:
+      entity_id: media_player.haus
+      media_content_id: '{{ audio_source_url }}'
+      media_content_type: '{{ audio_type }}'
+  - service: input_text.set_value
+    data:
+      entity_id: input_text.audio_source_url
+      value: ''
+
+play_or_pause_haus_audio:
+  alias: Play or pause Haus audio
+  sequence:
+  - service: script.play_acknowledgement_sound
+  - service: media_player.media_play_pause
+    data:
+      entity_id: media_player.haus
+
+seek_forward_haus_audio:
+  alias: Seek forward haus audio
+  sequence:
+  - service: script.play_acknowledgement_sound
+  - service: shell_command.seek_haus_audio
+    data:
+      seek_seconds: 10
+
+seek_backward_haus_audio:
+  alias: Seek backward haus audio
+  sequence:
+  - service: script.play_acknowledgement_sound
+  - service: shell_command.seek_haus_audio
+    data:
+      seek_seconds: -30
+
+increase_volume_on_haus_audio:
+  alias: Increase volume on Haus audio
+  sequence:
+  - service: script.play_acknowledgement_sound
+  - service: media_player.volume_up
+    data:
+      entity_id: media_player.haus
+
+decrease_volume_on_haus_audio:
+  alias: Decrease volume on Haus audio
+  sequence:
+  - service: script.play_acknowledgement_sound
+  - service: media_player.volume_down
+    data:
+      entity_id: media_player.haus
+
