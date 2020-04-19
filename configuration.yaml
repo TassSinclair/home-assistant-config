@@ -212,12 +212,6 @@ sensor:
       - rel_hum
       - weather
 
-  - platform: template
-    sensors:
-      washing_machine:
-        friendly_name: "Washing machine"
-        value_template: "{{ state('sensor.mijia_power_plug_6e9fa1_power') | float > 4 }}"
-
   - platform: scrape
     name: Podcast Security Now
     resource: http://feeds.twit.tv/sn.xml

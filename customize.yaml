@@ -1,30 +1,3 @@
-sensor.0x00158d00026e9fa1_power:
-  friendly_name: Washing machine power
-  icon: mdi:washing-machine
-switch.0x00158d00026e9fa1_switch:
-  friendly_name: Washing machine switch
-  icon: mdi:washing-machine
-sensor.0x00158d00028feb0b_power:
-  friendly_name: Workstation power
-  icon: mdi:desktop-mac-dashboard
-switch.0x00158d00028feb0b_switch:
-  friendly_name: Workstation switch
-  icon: mdi:desktop-mac-dashboard
-sensor.0x00158d00028b850a_power:
-  friendly_name: 3D printer power
-  icon: mdi:printer-3d
-switch.0x00158d00028b850a_switch:
-  friendly_name: 3D printer switch
-  icon: mdi:printer-3d
-sensor.0x00158d00028fe92c_power:
-  friendly_name: Media centre power
-  icon: mdi:television
-switch.0x00158d00028fe92c_switch:
-  friendly_name: Media centre switch
-  icon: mdi:television
-sensor.0x00158d00035a7b66_click:
-  friendly_name: Media centre button
-  icon: mdi:play-pause
 sensor.bom_air_temp_c:
   friendly_name: Air temp
 sensor.bom_cloud:
@@ -61,27 +34,15 @@ script.clear_mailbox:
   icon: mdi:mailbox-outline
 sensor.everyday_myki:
   icon: mdi:card-bulleted-outline
-sensor.australia_coronavirus_deaths:
-  icon: mdi:skull-outline
-sensor.worldwide_coronavirus_deaths:
-  icon: mdi:skull-outline
-sensor.worldwide_coronavirus_recovered:
-  icon: mdi:human-handsup
-sensor.australia_coronavirus_recovered:
-  icon: mdi:human-handsup
-sensor.australia_coronavirus_current:
-  icon: mdi:biohazard
-sensor.worldwide_coronavirus_current:
-  icon: mdi:biohazard
-sensor.worldwide_coronavirus_confirmed:
-  icon: mdi:hospital-box-outline
-sensor.australia_coronavirus_confirmed:
-  icon: mdi:hospital-box-outline
-sensor.taiwan_coronavirus_confirmed:
-  icon: mdi:hospital-box-outline
-sensor.taiwan_coronavirus_current:
-  icon: mdi:biohazard
-sensor.taiwan_coronavirus_deaths:
-  icon: mdi:skull-outline
-sensor.taiwan_coronavirus_recovered:
-  icon: mdi:human-handsup
+sensor.mijia_power_plug_8feb0b_power:
+  icon: mdi:printer-3d
+switch.mijia_power_plug_8feb0b_switch:
+  icon: mdi:printer-3d
+sensor.mijia_power_plug_6e9fa1_power:
+  icon: mdi:washing-machine
+switch.mijia_power_plug_6e9fa1_switch:
+  icon: mdi:washing-machine
+sensor.mijia_power_plug_8fe92c_power:
+  icon: mdi:television
+switch.mijia_power_plug_8fe92c_switch:
+  icon: mdi:television
